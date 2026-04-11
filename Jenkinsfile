@@ -40,7 +40,7 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 sh '''
-                minikube kubectl -- set image deployment/my-app my-app=$DOCKER_IMAGE:$DOCKER_TAG
+                minikube kubectl -- set image deployment/my-app nginx=$DOCKER_IMAGE:$DOCKER_TAG 
                 '''
             }
         }
