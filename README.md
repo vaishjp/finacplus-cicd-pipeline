@@ -110,6 +110,68 @@ The pipeline automates:
 - Ensures only working builds are deployed  
 
 ---
+# Git and Kubernetes Integration
+
+## Git Repository Configuration
+
+* Jenkins is connected to GitHub using the repository URL.
+* Authentication is handled using a Personal Access Token (PAT) stored securely in Jenkins credentials.
+* The pipeline pulls code using:
+    ```bash
+    git clone
+    ```
+
+### Pipeline Triggering Mechanisms
+* **SCM Polling:** Used to periodically check for changes.
+* **GitHub Webhook:** Can be configured to trigger builds instantly on code push.
+
+### Webhook Configuration
+1.  Navigate to **GitHub repository → Settings → Webhooks**.
+2.  Add the Jenkins endpoint:
+    ```text
+    http://<jenkins-ip>:8080/github-webhook/
+    ```
+3.  Set the trigger on **push events**.
+
+---
+
+## Kubernetes Cluster Configuration
+
+* **Minikube** is used as the Kubernetes cluster running on the EC2 instance.
+* The cluster is initialized using:
+    ```bash
+    minikube start
+    ```
+* Jenkins interacts with Kubernetes using:
+    ```bash
+    minikube kubectl
+    ```
+* A deployment is pre-created in Kubernetes for the application.
+* The CI/CD pipeline updates the running application using:
+    ```bash
+    kubectl set image deployment/<deployment-name> <container-name>=<image>:<tag>
+    ```
+* Deployment verification is performed using:
+    ```bash
+    kubectl rollout status deployment/<deployment-name>
+    ```
+
+### Application Status and Debugging
+
+* To check the status of the pods:
+    ```bash
+    kubectl get pods
+    ```
+* To view deployment logs:
+    ```bash
+    kubectl logs deployment/<deployment-name>
+    ```
+* Service exposure (if required):
+    ```bash
+    kubectl expose deployment <deployment-name> --type=NodePort --port=80
+    ```
+
+    -----
 
 ## Monitoring and Logging Strategy
 
