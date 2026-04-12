@@ -13,19 +13,20 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/vaishjp/finacplus-cicd-pipeline.git'
             }
         }
-
         stage('Test Application') {
             steps {
-                sh '''
-                echo "Running basic test..."
-                node app.js &
-                sleep 5
-                curl -f http://localhost:3000 || exit 1
-                echo "Test Passed "
-                pkill node
-                '''
-            }
-        }
+                 sh '''
+                 echo "Running test..."
+                 node app.js > app.log 2>&1 &
+                 sleep 5
+
+                 curl -f http://localhost:3000 || (cat app.log && exit 1)
+
+                 echo "Test Passed "
+                  pkill node || true
+                  '''
+              }
+           }
 
         stage('Logging Info') {
             steps {
