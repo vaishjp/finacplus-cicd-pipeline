@@ -21,8 +21,17 @@ pipeline {
                 node app.js &
                 sleep 5
                 curl -f http://localhost:3000 || exit 1
-                echo "Test Passed ✅"
+                echo "Test Passed "
                 pkill node
+                '''
+            }
+        }
+
+        stage('Logging Info') {
+            steps {
+                sh '''
+                echo "Build Number: $BUILD_NUMBER"
+                echo "Docker Image: $DOCKER_IMAGE:$DOCKER_TAG"
                 '''
             }
         }
@@ -61,10 +70,10 @@ pipeline {
 
     post {
         success {
-            echo "Deployment Successful 🚀"
+            echo "Deployment Successful "
         }
         failure {
-            echo "Pipeline Failed ❌"
+            echo "Pipeline Failed "
         }
     }
 }
