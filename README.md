@@ -197,6 +197,50 @@ Kubernetes - Minikube (Deployment)
 
 * Enable zero-downtime deployments
 
+
+ 1. Connect to EC2
+ssh -i "C:\Users\User\Downloads\finacplus-key.pem.pem" ubuntu@13.234.19.110
+ 2. Go to project
+cd ~/my-app
+ 3. Start Docker
+sudo systemctl start docker
+ 4. Start Minikube
+minikube start --driver=docker --memory=3000mb --cpus=2
+ 5. Verify Kubernetes
+minikube kubectl -- get nodes
+minikube kubectl -- get pods
+ 6. Start Jenkins
+cd ~
+java -jar jenkins.war --httpPort=8080
+ 7. Open Jenkins
+
+ In browser:
+
+http://13.234.19.110:8080
+8. Run pipeline
+
+ Open your job → Click Build Now
+
+ 9. Show deployment
+minikube kubectl -- get pods
+minikube kubectl -- get svc
+
+10. (Optional) Trigger via Git
+cd ~/my-app
+echo "trigger $(date)" >> test.txt
+git add .
+git commit -m "trigger"
+git pull origin main --rebase
+git push
+
+ Then show Jenkins auto/poll trigger
+
+IF ANY ISSUE
+Jenkins already running:
+ps aux | grep jenkins
+Restart Jenkins:
+sudo pkill -f jenkins
+java -jar ~/jenkins.war --httpPort=8080
 ---
 
 ##  Key Learnings
