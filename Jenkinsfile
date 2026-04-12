@@ -31,9 +31,9 @@ pipeline {
                 RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:3000 || true)
 
                 if [ "$RESPONSE" -eq 200 ]; then
-                    echo "Test Passed "
+                    echo "Test Passed"
                 else
-                    echo "Test Failed "
+                    echo "Test Failed"
                     cat app.log
                     kill $APP_PID
                     exit 1
@@ -78,28 +78,28 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                sh '''
-                minikube kubectl -- set image deployment/${params.DEPLOYMENT_NAME} nginx=$DOCKER_IMAGE:$DOCKER_TAG
-                '''
+                sh """
+                minikube kubectl -- set image deployment/${params.DEPLOYMENT_NAME} nginx=${DOCKER_IMAGE}:${DOCKER_TAG}
+                """
             }
         }
 
         stage('Verify Deployment') {
             steps {
-                sh '''
+                sh """
                 echo "Verifying deployment..."
                 minikube kubectl -- rollout status deployment/${params.DEPLOYMENT_NAME}
-                '''
+                """
             }
         }
     }
 
     post {
         success {
-            echo "Deployment Successful "
+            echo "Deployment Successful"
         }
         failure {
-            echo "Pipeline Failed "
+            echo "Pipeline Failed"
         }
     }
 }
