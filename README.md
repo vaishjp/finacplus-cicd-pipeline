@@ -110,7 +110,6 @@ The pipeline automates:
 - Ensures only working builds are deployed  
 
 ---
-# Git and Kubernetes Integration
 
 ## Git Repository Configuration
 
