@@ -14,6 +14,19 @@ pipeline {
             }
         }
 
+        stage('Test Application') {
+            steps {
+                sh '''
+                echo "Running basic test..."
+                node app.js &
+                sleep 5
+                curl -f http://localhost:3000 || exit 1
+                echo "Test Passed ✅"
+                pkill node
+                '''
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 sh '''
@@ -40,7 +53,7 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 sh '''
-                minikube kubectl -- set image deployment/my-app nginx=$DOCKER_IMAGE:$DOCKER_TAG 
+                minikube kubectl -- set image deployment/my-app nginx=$DOCKER_IMAGE:$DOCKER_TAG
                 '''
             }
         }
@@ -48,10 +61,10 @@ pipeline {
 
     post {
         success {
-            echo "Deployment Successful "
+            echo "Deployment Successful 🚀"
         }
         failure {
-            echo "Pipeline Failed "
+            echo "Pipeline Failed ❌"
         }
     }
 }
