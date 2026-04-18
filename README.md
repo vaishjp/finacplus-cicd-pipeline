@@ -51,7 +51,7 @@ The pipeline automates:
 ## CI/CD Pipeline Workflow
 
 1. Code is pushed to GitHub  
-2. Jenkins detects changes (SCM Polling / Webhook)  
+2. Jenkins detects changes (Webhook)  
 3. Jenkins pulls latest code  
 4. Application is validated using test stage  
 5. Docker image is built dynamically  
@@ -90,7 +90,7 @@ The pipeline automates:
 ### 4. Pipeline Setup
 - Create Jenkins pipeline job  
 - Link GitHub repository  
-- Configure triggers (Polling/Webhook)  
+- Configure triggers (Webhook)  
 
 ---
 
@@ -121,7 +121,7 @@ The pipeline automates:
     ```
 
 ### Pipeline Triggering Mechanisms
-* **SCM Polling:** Used to periodically check for changes.
+
 * **GitHub Webhook:** Can be configured to trigger builds instantly on code push.
 
 ### Webhook Configuration
