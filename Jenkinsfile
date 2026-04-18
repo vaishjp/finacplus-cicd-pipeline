@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    triggers {
+        githubPush()
+    }
+
     parameters {
         string(name: 'REPO_URL', defaultValue: 'https://github.com/vaishjp/finacplus-cicd-pipeline.git', description: 'Git Repository URL')
         string(name: 'DOCKER_IMAGE', defaultValue: 'vaishnavijp/my-app', description: 'Docker Image Name')
@@ -87,7 +91,7 @@ pipeline {
         stage('Verify Deployment') {
             steps {
                 sh """
-                echo "Verifying deployment..."
+                echo "Verifying deployment"
                 minikube kubectl -- rollout status deployment/${params.DEPLOYMENT_NAME}
                 """
             }
